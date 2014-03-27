@@ -1,0 +1,24 @@
+<canvas id=c width=400 height=400/>
+<script>
+g=document.all.c.getContext('webgl')
+g.clearColor(0,0,0,1)
+g.clear(16384)
+p=g.createProgram()
+s=g.createShader(35633)
+g.shaderSource(s,'attribute vec3 pos;void main(){gl_Position=vec4(pos,2);}')
+g.compileShader(s)
+g.attachShader(p,s)
+s=g.createShader(35632)
+g.shaderSource(s,'void main(){gl_FragColor=vec4(1,0,0,1);}')
+g.compileShader(s)
+g.attachShader(p,s)
+g.linkProgram(p)
+g.useProgram(p)
+v=[-1,0,0,0,1,0,0,-1,0,1,0,0]
+g.bindBuffer(34962,g.createBuffer())
+g.bufferData(34962,new Float32Array(v),35044)
+a=g.getAttribLocation(p,'pos')
+g.enableVertexAttribArray(a)
+g.vertexAttribPointer(a,3,5126,false,0,0)
+g.drawArrays(5,0,4)
+</script>
