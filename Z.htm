@@ -1,0 +1,55 @@
+<canvas id=c width=400 height=400/>
+<script>
+Z={}
+Z.g=document.all.c.getContext('webgl')
+Z.clr=function(r,g,b,a){
+    Z.g.clearColor(r||0,g||0,b||0,a||1)
+    Z.g.clear(16384)
+}
+Z.shdr=function(v,f){
+    var g=Z.g,p,s
+    p=g.createProgram()
+    s=g.createShader(35633)
+    g.shaderSource(s,v)
+    g.compileShader(s)
+    g.attachShader(p,s)
+    s=g.createShader(35632)
+    g.shaderSource(s,f)
+    g.compileShader(s)
+    g.attachShader(p,s)
+    g.linkProgram(p)
+    g.useProgram(p)
+    Z.p=p;
+    return p
+}
+Z.drw=function(v,p){
+    var g=Z.g,a,l
+    p=p||Z.p
+    g.bindBuffer(34962,g.createBuffer())
+    g.bufferData(34962,new Float32Array(v),35044)
+    a=g.getAttribLocation(p,'pos')
+    g.enableVertexAttribArray(a)
+    l=v.length>>1
+    g.vertexAttribPointer(a,2,5126,false,0,0)
+    g.drawArrays(5,0,l)
+}
+
+//clear screen
+Z.clr()
+
+//draw triangle using simple vertex&pixel shader
+Z.drw([0,0,1,0,0,1],
+    Z.shdr('attribute vec3 pos;\
+        void main(){gl_Position=vec4(pos,5);\
+    }',
+    'void main(){\
+        gl_FragColor=vec4(1,0,0,1);\
+    }')
+)
+
+/*draw rectangle using same shader
+            2 __ 3
+             |\ |
+            0|_\|1  */
+Z.drw([2,0,3,0,2,1,3,1]);
+</script>
